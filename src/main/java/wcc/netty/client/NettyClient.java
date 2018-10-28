@@ -1,4 +1,4 @@
-package wcc.netty;
+package wcc.netty.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -32,6 +32,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        socketChannel.pipeline().addLast(new FirstClientHandler());
 
                     }
                 });
@@ -45,8 +46,8 @@ public class NettyClient {
 
             }
         });*/
-
-        connect(bootstrap, "127.0.0.1",1000, MAX_RETRT);
+        //bootstrap.attr()
+        connect(bootstrap, "127.0.0.1",8000, MAX_RETRT);
 
 
     }
@@ -73,6 +74,8 @@ public class NettyClient {
                int delayTime = 1<<index;
 
                System.out.println(new Date()+": 连接失败,第:" + index +"次重新连接");
+               //bootstrap.config 返回 BootstrapConfig: 他是对bootstrap配置参数的抽象
+               //.group 返回的是我们一开始设置的线程模型对象, workGroup的.schedule可以实现定时任务的逻辑
                bootstrap.config().group().schedule(()->connect(bootstrap, host, port, retry -1), delayTime, TimeUnit.SECONDS);
 
            }

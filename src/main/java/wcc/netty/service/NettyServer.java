@@ -1,4 +1,4 @@
-package wcc.netty;
+package wcc.netty.service;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -28,6 +28,7 @@ public class NettyServer {
 
                            @Override
                            protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
+                             nioSocketChannel.pipeline().addLast(new FirstServiceHandler());
 
                            }
                        });
