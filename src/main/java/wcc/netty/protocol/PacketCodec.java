@@ -2,13 +2,16 @@ package wcc.netty.protocol;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import wcc.netty.protocol.request.LoginRequestPacket;
+import wcc.netty.protocol.response.LoginResponsePacket;
 import wcc.netty.serialize.Serializer;
 import wcc.netty.serialize.impl.JSONSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static wcc.netty.protocol.Command.LOGIN_REQUEST;
+import static wcc.netty.protocol.command.Command.LOGIN_REQUEST;
+import static wcc.netty.protocol.command.Command.LOGIN_RESPONSE;
 
 /**
  * @author charse
@@ -22,19 +25,20 @@ public class PacketCodec {
      */
     private static final int MAGIC_NUMBER = 0x12345678;
 
-    private static final Map<Byte, Class<? extends Packet>> packetTypeMap;
+    public static final PacketCodec INSTANCE = new PacketCodec();
 
-    private static final Map<Byte, Serializer> serializerMap;
+    private final Map<Byte, Class<? extends Packet>> packetTypeMap;
 
+    private final Map<Byte, Serializer> serializerMap;
 
-    static {
+    private PacketCodec(){
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(LOGIN_REQUEST,LoginRequestPacket.class);
+        packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
         serializerMap.put(serializer.getSerializerAlogrithm(), serializer);
-
     }
 
 
@@ -43,9 +47,9 @@ public class PacketCodec {
      * @param packet
      * @return
      */
-    public ByteBuf encode(Packet packet){
+    public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet){
         //1. 创建ByteBuf对象
-        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
+        ByteBuf byteBuf = byteBufAllocator.ioBuffer();
         //2. 序列化Java对象 (对象的数据)
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
 

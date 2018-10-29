@@ -2,6 +2,7 @@ package wcc.netty.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -19,6 +20,10 @@ public class NettyClient {
 
     private static final  int MAX_RETRT = 3;
 
+    private static final String HOST = "127.0.0.1";
+
+    private static final int PORT = 8000;
+
     public static void main(String[] args){
 
         NioEventLoopGroup workGroup = new NioEventLoopGroup();
@@ -28,11 +33,14 @@ public class NettyClient {
         bootstrap.group(workGroup)
                 //2.指定IO类型为NIO
                 .channel(NioSocketChannel.class)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.TCP_NODELAY, true)
                 //3.IO处理逻辑
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        socketChannel.pipeline().addLast(new FirstClientHandler());
+                        socketChannel.pipeline().addLast(new ClientHandler());
 
                     }
                 });
@@ -47,7 +55,7 @@ public class NettyClient {
             }
         });*/
         //bootstrap.attr()
-        connect(bootstrap, "127.0.0.1",8000, MAX_RETRT);
+        connect(bootstrap, HOST,PORT, MAX_RETRT);
 
 
     }

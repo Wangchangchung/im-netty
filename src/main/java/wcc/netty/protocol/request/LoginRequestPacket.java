@@ -1,4 +1,6 @@
-package wcc.netty.protocol;
+package wcc.netty.protocol.request;
+
+import wcc.netty.protocol.Packet;
 
 /**
  * @author charse
@@ -7,7 +9,7 @@ package wcc.netty.protocol;
  */
 public class LoginRequestPacket extends Packet {
 
-    private Integer userId;
+    private String userId;
 
     private String userName;
 
@@ -18,11 +20,11 @@ public class LoginRequestPacket extends Packet {
         return null;
     }
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
