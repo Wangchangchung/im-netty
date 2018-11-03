@@ -7,6 +7,8 @@ import wcc.netty.protocol.Packet;
 import wcc.netty.protocol.request.LoginRequestPacket;
 import wcc.netty.protocol.PacketCodec;
 import wcc.netty.protocol.response.LoginResponsePacket;
+import wcc.netty.protocol.response.MessageResponsePacket;
+import wcc.netty.utils.LoginUtil;
 
 import java.util.Date;
 import java.util.UUID;
@@ -52,9 +54,13 @@ public class ClientHandler extends ChannelInboundHandlerAdapter{
 
             if (loginResponsePacket.isSuccess()){
                 System.out.println(new Date() + ": client login success !");
+                LoginUtil.markAsLogin(ctx.channel());
             }else {
                 System.out.println(new Date() + ": client login fail message :" +loginResponsePacket.getMessage());
             }
+        }else if (packet instanceof MessageResponsePacket){
+            MessageResponsePacket messageResponsePacket = (MessageResponsePacket) packet;
+            System.out.println(new Date() + ": client accept message from service" + messageResponsePacket.getMessage());
         }
 
 

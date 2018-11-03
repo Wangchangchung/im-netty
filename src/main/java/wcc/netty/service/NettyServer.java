@@ -52,9 +52,7 @@ public class NettyServer {
      * @param port
      */
     public static void bind(final  ServerBootstrap serverBootstrap, final int port){
-        serverBootstrap.bind(port).addListener(new GenericFutureListener<Future<? super Void>>() {
-            @Override
-            public void operationComplete(Future<? super Void> future) throws Exception {
+        serverBootstrap.bind(port).addListener(future -> {
                 if (future.isSuccess()){
                     System.out.println("服务端端口[" + port + "]绑定成功");
                 }else {
@@ -63,7 +61,6 @@ public class NettyServer {
                     bind(serverBootstrap, temp);
                 }
 
-            }
         });
 
     }

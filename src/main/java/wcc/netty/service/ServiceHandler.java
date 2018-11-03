@@ -6,7 +6,9 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import wcc.netty.protocol.Packet;
 import wcc.netty.protocol.PacketCodec;
 import wcc.netty.protocol.request.LoginRequestPacket;
+import wcc.netty.protocol.request.MessageRequestPacket;
 import wcc.netty.protocol.response.LoginResponsePacket;
+import wcc.netty.protocol.response.MessageResponsePacket;
 
 import java.util.Date;
 
@@ -25,7 +27,6 @@ public class ServiceHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println(new Date() + ": client start login ...");
 
         ByteBuf byteBuf = (ByteBuf) msg;
 
@@ -33,6 +34,7 @@ public class ServiceHandler extends ChannelInboundHandlerAdapter {
         Packet packet = PacketCodec.INSTANCE.decode(byteBuf);
 
         if (packet instanceof LoginRequestPacket){
+            System.out.println(new Date() + ": client start login ...");
             //登录流程
             LoginRequestPacket loginRequestPacket = (LoginRequestPacket) packet;
             //登录响应对象
@@ -55,8 +57,15 @@ public class ServiceHandler extends ChannelInboundHandlerAdapter {
             ByteBuf response = PacketCodec.INSTANCE.encode(ctx.alloc(),  loginResponsePacket);
             //写数据
             ctx.channel().writeAndFlush(response);
+        }else if (packet instanceof MessageRequestPacket){
+            //客户端发送消息
+            MessageRequestPacket messageRequestPacket = (MessageRequestPacket) packet;
+            MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
+            System.out.println(new Date() + ": accept message " + messageRequestPacket.getMessage());
 
-
+            messageResponsePacket.setMessage("service send back [ " + messageRequestPacket.getMessage() + " ]");
+            ByteBuf responseByteBuf = PacketCodec.INSTANCE.encode(ctx.alloc(), messageResponsePacket);
+            ctx.channel().writeAndFlush(responseByteBuf);
         }
 
     }
@@ -65,5 +74,6 @@ public class ServiceHandler extends ChannelInboundHandlerAdapter {
     private boolean valid(LoginRequestPacket loginRequestPacket) {
         return true;
     }
+
 
 }
