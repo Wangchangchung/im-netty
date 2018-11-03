@@ -2,6 +2,8 @@ package wcc.netty.protocol.request;
 
 import wcc.netty.protocol.Packet;
 
+import static wcc.netty.protocol.command.Command.LOGIN_REQUEST;
+
 /**
  * @author charse
  * @create 2018-10-29
@@ -17,7 +19,7 @@ public class LoginRequestPacket extends Packet {
 
     @Override
     public Byte getCommand() {
-        return null;
+        return LOGIN_REQUEST;
     }
 
     public String getUserId() {
