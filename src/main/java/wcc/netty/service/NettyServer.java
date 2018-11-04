@@ -8,6 +8,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import wcc.netty.service.inbound.InBoundHandlerA;
+import wcc.netty.service.inbound.InBoundHandlerB;
+import wcc.netty.service.inbound.InBoundHandlerC;
+import wcc.netty.service.outbund.OutBoundHandlerA;
+import wcc.netty.service.outbund.OutBoundHandlerB;
+import wcc.netty.service.outbund.OutBoundHandlerC;
 
 /**
  * @author charse
@@ -34,7 +40,18 @@ public class NettyServer {
 
                            @Override
                            protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
-                             nioSocketChannel.pipeline().addLast(new ServiceHandler());
+                               //nioSocketChannel.pipeline().addLast(new ServiceHandler());
+                               //inBound, 处理读数据的逻辑链
+                               nioSocketChannel.pipeline().addLast(new InBoundHandlerA());
+                               nioSocketChannel.pipeline().addLast(new InBoundHandlerB());
+                               nioSocketChannel.pipeline().addLast(new InBoundHandlerC());
+
+                               //outBound, 处理写数据的逻辑
+                               nioSocketChannel.pipeline().addLast(new OutBoundHandlerA());
+                               nioSocketChannel.pipeline().addLast(new OutBoundHandlerB());
+                               nioSocketChannel.pipeline().addLast(new OutBoundHandlerC());
+
+
 
                            }
                        });
