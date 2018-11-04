@@ -50,9 +50,8 @@ public class PacketCodec {
      * @param packet
      * @return
      */
-    public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet){
+    public void encode(ByteBuf byteBuf, Packet packet){
         //1. 创建ByteBuf对象
-        ByteBuf byteBuf = byteBufAllocator.ioBuffer();
         //2. 序列化Java对象 (对象的数据)
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
@@ -64,7 +63,6 @@ public class PacketCodec {
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
 
-        return byteBuf;
     }
 
 

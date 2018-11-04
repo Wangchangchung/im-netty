@@ -18,6 +18,13 @@ public class MessageResponsePacket extends Packet{
         return MESSAGE_RESPONSE;
     }
 
+    public MessageResponsePacket() {
+    }
+
+    public MessageResponsePacket(String message) {
+        this.message = message;
+    }
+
     public String getMessage() {
         return message;
     }

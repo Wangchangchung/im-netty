@@ -18,6 +18,13 @@ public class MessageRequestPacket extends Packet{
         return MESSAGE_REQUEST;
     }
 
+    public MessageRequestPacket() {
+    }
+
+    public MessageRequestPacket(String message) {
+        this.message = message;
+    }
+
     public String getMessage() {
         return message;
     }
