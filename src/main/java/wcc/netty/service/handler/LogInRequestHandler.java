@@ -25,16 +25,15 @@ public class LogInRequestHandler extends SimpleChannelInboundHandler<LoginReques
         //登录响应对象
         LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
         loginResponsePacket.setVesion(packet.getVesion());
+        loginResponsePacket.setUserName(packet.getUserName());
 
         //假设验证成功
         if (valid(packet)){
             loginResponsePacket.setSuccess(true);
-            System.out.println(new Date() + ": login success");
             //将session与Channel进行绑定
             //客户端进行生成 userId
             String  userId = randomUserId();
             loginResponsePacket.setUserId(userId);
-            loginResponsePacket.setUserName(packet.getUserName());
             SessionUtil.bindSession(new Session(userId, packet.getUserName()), ctx.channel());
 
         }else {

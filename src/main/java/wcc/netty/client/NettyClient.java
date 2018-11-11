@@ -11,6 +11,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import wcc.netty.client.handler.LoginResponseHandler;
 import wcc.netty.codec.PacketDecoder;
 import wcc.netty.codec.PacketEncoder;
+import wcc.netty.codec.Spliter;
 import wcc.netty.protocol.request.LoginRequestPacket;
 import wcc.netty.protocol.request.MessageRequestPacket;
 import wcc.netty.service.handler.MessageRequestHandler;
@@ -50,6 +51,7 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         //socketChannel.pipeline().addLast(new ClientHandler());
+                        socketChannel.pipeline().addLast(new Spliter());
                         socketChannel.pipeline().addLast(new PacketDecoder());
                         socketChannel.pipeline().addLast(new LoginResponseHandler());
                         socketChannel.pipeline().addLast(new MessageRequestHandler());
