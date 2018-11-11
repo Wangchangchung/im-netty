@@ -4,8 +4,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import wcc.netty.protocol.request.LoginRequestPacket;
 import wcc.netty.protocol.response.LoginResponsePacket;
+import wcc.netty.session.Session;
+import wcc.netty.utils.SessionUtil;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author charse
@@ -27,18 +30,33 @@ public class LogInRequestHandler extends SimpleChannelInboundHandler<LoginReques
         if (valid(packet)){
             loginResponsePacket.setSuccess(true);
             System.out.println(new Date() + ": login success");
+            //将session与Channel进行绑定
+            //客户端进行生成 userId
+            String  userId = randomUserId();
+            loginResponsePacket.setUserId(userId);
+            loginResponsePacket.setUserName(packet.getUserName());
+            SessionUtil.bindSession(new Session(userId, packet.getUserName()), ctx.channel());
 
         }else {
             loginResponsePacket.setSuccess(false);
-            loginResponsePacket.setMessage("login fail password wrong");
-
+            loginResponsePacket.setReason("账号密码校验失败");
             System.out.println(new Date() +": login fail");
+
         }
 
         //对响应对象进行编码
         //ByteBuf response = PacketCodec.INSTANCE.encode(ctx.alloc(),  loginResponsePacket);
         //写数据
         ctx.channel().writeAndFlush(loginResponsePacket);
+    }
+
+    private static String randomUserId() {
+        return UUID.randomUUID().toString().split("-")[0];
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        SessionUtil.unBindSession(ctx.channel());
     }
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {

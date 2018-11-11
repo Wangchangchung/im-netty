@@ -6,11 +6,11 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import wcc.netty.service.handler.AuthHandler;
 import wcc.netty.codec.PacketDecoder;
 import wcc.netty.codec.PacketEncoder;
 import wcc.netty.service.handler.LogInRequestHandler;
 import wcc.netty.service.handler.MessageRequestHandler;
-import wcc.netty.service.handler.TestChannelHandlerLifeCycle;
 
 /**
  * @author charse
@@ -40,10 +40,11 @@ public class NettyServer {
                                //nioSocketChannel.pipeline().addLast(new ServiceHandler());
 
                                // 添加测试的 ChannelHandler 生命周期
-                               nioSocketChannel.pipeline().addLast(new TestChannelHandlerLifeCycle());
+                               //nioSocketChannel.pipeline().addLast(new TestChannelHandlerLifeCycle());
 
                                 nioSocketChannel.pipeline().addLast(new PacketDecoder());
                                 nioSocketChannel.pipeline().addLast(new LogInRequestHandler());
+                                nioSocketChannel.pipeline().addLast(new AuthHandler());
                                 nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
                                 nioSocketChannel.pipeline().addLast(new PacketEncoder());
 

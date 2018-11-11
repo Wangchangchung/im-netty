@@ -9,12 +9,15 @@ import static wcc.netty.protocol.command.Command.LOGIN_RESPONSE;
  * @create 2018-10-29
  * @Description:
  */
-public class LoginResponsePacket extends Packet{
+public class LoginResponsePacket extends Packet {
+
+    private String userId;
+
+    private String userName;
 
     private boolean success;
 
-    private String message;
-
+    private String reason;
 
     @Override
     public Byte getCommand() {
@@ -29,11 +32,27 @@ public class LoginResponsePacket extends Packet{
         this.success = success;
     }
 
-    public String getMessage() {
-        return message;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

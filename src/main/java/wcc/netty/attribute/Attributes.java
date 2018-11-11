@@ -1,6 +1,7 @@
 package wcc.netty.attribute;
 
 import io.netty.util.AttributeKey;
+import wcc.netty.session.Session;
 
 /**
  * @author charse
@@ -9,6 +10,6 @@ import io.netty.util.AttributeKey;
  */
 public interface Attributes {
 
-    AttributeKey<Boolean> LOGIN = AttributeKey.newInstance("login");
+    AttributeKey<Session> SESSION = AttributeKey.newInstance("session");
 
 }

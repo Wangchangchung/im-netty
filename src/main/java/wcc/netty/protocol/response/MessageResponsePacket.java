@@ -11,7 +11,27 @@ import static wcc.netty.protocol.command.Command.MESSAGE_RESPONSE;
  */
 public class MessageResponsePacket extends Packet{
 
+    private String fromUserId;
+
+    private String fromUserName;
+
     private String message;
+
+    public String getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(String fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
+    public String getFromUserName() {
+        return fromUserName;
+    }
+
+    public void setFromUserName(String fromUserName) {
+        this.fromUserName = fromUserName;
+    }
 
     @Override
     public Byte getCommand() {

@@ -24,7 +24,7 @@ public class PacketCodec {
     /**
      * 协议包魔数
      */
-    private static final int MAGIC_NUMBER = 0x12345678;
+    public static final int MAGIC_NUMBER = 0x12345678;
 
     public static final PacketCodec INSTANCE = new PacketCodec();
 
