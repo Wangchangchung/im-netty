@@ -2,9 +2,13 @@ package wcc.netty.protocol;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import wcc.netty.protocol.request.CreateGroupRequestPacket;
 import wcc.netty.protocol.request.LoginRequestPacket;
+import wcc.netty.protocol.request.LogoutRequestPacket;
 import wcc.netty.protocol.request.MessageRequestPacket;
+import wcc.netty.protocol.response.CreateGroupResponsePacket;
 import wcc.netty.protocol.response.LoginResponsePacket;
+import wcc.netty.protocol.response.LogoutResponsePacket;
 import wcc.netty.protocol.response.MessageResponsePacket;
 import wcc.netty.serialize.Serializer;
 import wcc.netty.serialize.impl.JSONSerializer;
@@ -38,6 +42,10 @@ public class PacketCodec {
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
         packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(LOGOUT_REQUEST, LogoutRequestPacket.class);
+        packetTypeMap.put(LOGOUT_RESPONSE, LogoutResponsePacket.class);
+        packetTypeMap.put(CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();

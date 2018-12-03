@@ -29,7 +29,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
             // 3.拿到消息接收方的 channel
             Channel toUserChannel = SessionUtil.getChannel(packet.getToUserId());
 
-            // 4.将消息发送给消息接收方
+            // 4.将消息发送给消息接收方9fd65fc5
             if (toUserChannel != null && SessionUtil.hasLogin(toUserChannel)) {
                 toUserChannel.writeAndFlush(messageResponsePacket);
             } else {

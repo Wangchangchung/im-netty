@@ -9,11 +9,13 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import wcc.netty.client.handler.LoginResponseHandler;
+import wcc.netty.client.handler.LogoutResponseHandler;
 import wcc.netty.codec.PacketDecoder;
 import wcc.netty.codec.PacketEncoder;
 import wcc.netty.codec.Spliter;
 import wcc.netty.protocol.request.LoginRequestPacket;
 import wcc.netty.protocol.request.MessageRequestPacket;
+import wcc.netty.service.handler.CreateGroupRequestHandler;
 import wcc.netty.service.handler.MessageRequestHandler;
 import wcc.netty.utils.SessionUtil;
 
@@ -54,6 +56,8 @@ public class NettyClient {
                         socketChannel.pipeline().addLast(new Spliter());
                         socketChannel.pipeline().addLast(new PacketDecoder());
                         socketChannel.pipeline().addLast(new LoginResponseHandler());
+                        socketChannel.pipeline().addLast(new LogoutResponseHandler());
+                        socketChannel.pipeline().addLast(new CreateGroupRequestHandler());
                         socketChannel.pipeline().addLast(new MessageRequestHandler());
                         socketChannel.pipeline().addLast(new PacketEncoder());
 
@@ -124,13 +128,12 @@ public class NettyClient {
 
                    // 密码使用默认的
                    loginRequestPacket.setPassword("pwd");
-
-                   // 发送登录数据包
+                   // 发送登录数据包 be376090
                    channel.writeAndFlush(loginRequestPacket);
                    waitForLoginResponse();
                } else {
-                   String toUserId = sc.next();
-                   String message = sc.next();
+                   String toUserId = sc.nextLine();
+                   String message = sc.nextLine();
                    channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
                }
            }
