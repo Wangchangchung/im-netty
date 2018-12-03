@@ -34,6 +34,7 @@ public class LogInRequestHandler extends SimpleChannelInboundHandler<LoginReques
             //客户端进行生成 userId
             String  userId = randomUserId();
             loginResponsePacket.setUserId(userId);
+            System.out.println("[" + packet.getUserName() + "]登录成功");
             SessionUtil.bindSession(new Session(userId, packet.getUserName()), ctx.channel());
 
         }else {
