@@ -63,17 +63,7 @@ public class NettyClient {
 
                     }
                 });
-                //4.建立连接
-       /* bootstrap.connect("127.0.0.1",80).addListener(future ->{
-            if (future.isSuccess()){
-                System.out.println("连接成功");
 
-            }else {
-                System.out.println("连接失败");
-
-            }
-        });*/
-        //bootstrap.attr()
         connect(bootstrap, HOST,PORT, MAX_RETRT);
 
 
